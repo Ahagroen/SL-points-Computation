@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Input Driver Name</h1>
+    <p>
+        <form action="" method="post">    
+        {% csrf_token %}
+        <label for="driver">Driver: </label>
+        <input id="driver" type="text" name="driverName" value="{{ current_name }}">
+        <input type="submit" value="OK">
+    </form>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}</p>
+    <p>
+        <table>
+            <tr>
+                <th>Driver</th>
+                <th>Points</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </p>
+</body>
+</html>

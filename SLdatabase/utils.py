@@ -50,5 +50,5 @@ def scanDatabaseName(name):
                 driver = Driver.objects.get(name=checked_name)
                 return driver.name
             except:
-                #generateNewDriver(name)#implement + test later
-                return False
+                driver_info = generateDriverInfo(checked_name)
+                return driver_info.name

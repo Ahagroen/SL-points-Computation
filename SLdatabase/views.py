@@ -1,21 +1,18 @@
 from django.shortcuts import redirect, render
 from .models import Driver
-from .utils import generateDriverInfo,checkValid, tryUpdate
+from .utils import generateDriverInfo,checkValid, scanDatabaseName, tryUpdate
 
 def index(request):
     if request.method == "POST":
         form = request.POST.get("driverName")
-        checked_name = checkValid(form)
-        if not checked_name:
+        Name = scanDatabaseName(form)
+        if Name:
+            driverInfo = Driver.objects.get(name=Name)
+            driverInfo = tryUpdate(driverInfo)
+            return redirect("/SLdatabase/"+str(driverInfo.name))
+        else:
             return render(request, 'SLdatabase/index.html', {
                 'error_message':'Cannot Find that Driver, Check Spelling and try again.'})
-        else:
-            try:
-                driverInfo = Driver.objects.get(name=checked_name)
-                driverInfo = tryUpdate(driverInfo)
-            except:
-                driverInfo = generateDriverInfo(checked_name)
-            return redirect("/SLdatabase/"+str(driverInfo.name))
     else:
         return render(request, 'SLdatabase/index.html', {})
 

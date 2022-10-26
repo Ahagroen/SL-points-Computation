@@ -97,5 +97,9 @@ class DriverModelTests(TestCase):
         self.assertEqual(scanDatabaseName(testName3),"Colton Herta")
         self.assertEqual(scanDatabaseName(testName4),"Colton Herta")
 
+    def test_new_driver_gen(self):
+        testName = "Alex Palou"
+        self.assertEqual(scanDatabaseName(testName),"Álex Palou")
+
 
 

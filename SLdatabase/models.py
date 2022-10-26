@@ -2,7 +2,6 @@ from django.db import models
 
 class Driver(models.Model):
     name = models.CharField(max_length=60) #list aliases?
-    series = models.CharField (max_length=3000)
     min_points = models.CharField(max_length=10)
     live_points = models.CharField(max_length=10)
     last_updated = models.DateField(auto_now=True)
@@ -16,3 +15,10 @@ class Driver(models.Model):
            models.Index(fields=['name',]),
            models.Index(fields=['live_points',]),
     ]
+
+class RacingSeries(models.Model):
+    year = models.IntegerField()
+    series_name = models.CharField(max_length = 40)
+    points = models.IntegerField()
+    finish = models.IntegerField()
+    driver = models.ForeignKey(Driver,on_delete=models.CASCADE)

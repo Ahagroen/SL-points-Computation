@@ -2,8 +2,11 @@
 #Figure out relevent season finishes
 #Find what series they are, and point value
 #render
+from SLbackend.SLComputation import findPoints
+from SLdatabase.models import RacingSeries
 from .Utils import getTable,getSection
-def GenerateResults(driver):
+def GenerateResults(driverClass):
+    driver = driverClass.name
     section = getSection(driver,"Racing record")
     TableList = getTable(driver,section)
     #print(currentTable)
@@ -40,26 +43,27 @@ def GenerateResults(driver):
                 working.append(temp)
             for i in working:
                 currentResults = parseTable(i)
-                results.append(currentResults)
+                a = RacingSeries(year = Year, series_name=currentResults[0],finish=currentResults[1],points=0,driver=driverClass)
+                a.save()
+                findPoints(a)
             #print(results)
         else:
-            Year = check[0].strip()
+            if "-" in check[0]:
+                Year = int(check[0][0:3]+check[0][-2:])
+            else:
+                Year = check[0].strip()
             #print(check)
-            #print(Year)
-            #print(check)
+            #print(check)s
             if "|-" in check:
                 working = check[0:check.index("|-")]
             else: 
                 working = check
             #print(working)
-            results = parseTable(working)
+            result = parseTable(working)
+            a = RacingSeries(year = Year,series_name = result[0],finish=result[1],points = 0,driver=driverClass)
+            a.save()
+            findPoints(a)
             #print(results)
-        finalTable[Year] = results
-    output = {}
-    for i in finalTable:
-        if '--' not in i:
-            output[i] = finalTable[i]
-    return output
 
 def parseTable(intake):
     #print(intake)

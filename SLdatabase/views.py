@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .models import Driver
-from .utils import generateDriverInfo,checkValid, scanDatabaseName, tryUpdate
+from .utils import scanDatabaseName, tryUpdate
 
 def index(request):
     if request.method == "POST":
@@ -19,4 +19,4 @@ def index(request):
 def driverPage(request,driverName):
     driverInfo = Driver.objects.get(name=driverName)
     return render(request,'SLdatabase/driver.html',{'name':driverInfo.name,
-        'series':driverInfo.series,'live_points':driverInfo.live_points,'min_points':driverInfo.min_points})
+        'seriesList':driverInfo.series,'live_points':driverInfo.live_points,'min_points':driverInfo.min_points})

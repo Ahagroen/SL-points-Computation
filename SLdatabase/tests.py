@@ -92,10 +92,17 @@ class DriverModelTests(TestCase):
         testName2 = "Colton H" #Not Valid
         testName3 = "Colton Herta"
         testName4 = "C Herta"
+        testName5 = "herta"
+        testName6 = "colton herta"
+        testName8 = " colton Herta"
         self.assertEqual(scanDatabaseName(testName1),"Colton Herta")
         self.assertEqual(scanDatabaseName(testName2),False)
         self.assertEqual(scanDatabaseName(testName3),"Colton Herta")
         self.assertEqual(scanDatabaseName(testName4),"Colton Herta")
+        self.assertEqual(scanDatabaseName(testName5),"Colton Herta")
+        self.assertEqual(scanDatabaseName(testName6),"Colton Herta")
+        #self.assertEqual(scanDatabaseName(testName7),"Colton Herta")
+        self.assertEqual(scanDatabaseName(testName8),"Colton Herta")
 
     def test_new_driver_gen(self):
         testName = "Alex Palou"

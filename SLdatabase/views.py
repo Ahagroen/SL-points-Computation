@@ -12,7 +12,7 @@ def index(request):
             return redirect("/SLdatabase/"+str(driverInfo.name))
         else:
             return render(request, 'SLdatabase/index.html', {
-                'error_message':'Cannot Find that Driver, Check Spelling and try again.'})
+                'error_message':'Cannot Find that Driver, Check Spelling and try again.'}) #Fix back button so that it doesn't render this error message
     else:
         return render(request, 'SLdatabase/index.html', {})
 

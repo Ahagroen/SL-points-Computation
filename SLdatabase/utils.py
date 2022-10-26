@@ -15,6 +15,8 @@ def generateDriverInfo(name):
 
 def checkValid(name):
     checked_name = searchWiki(name)
+    if not checked_name:
+        return False
     section = getSection(checked_name,"Racing record")
     if section:
         return checked_name
@@ -33,14 +35,16 @@ def getTopTen():
 
 def scanDatabaseName(name):
     for driver in Driver.objects.all():
-        if driver.name == name:
+        check_name = driver.name.lower()
+        test_name = name.lower()
+        if check_name == test_name:
             return driver.name
-        elif driver.name.split()[1] == name: #way of dealing with this with multiple last names
-            return driver.name
-        elif driver.name.split()[1] == name.split()[1]:
-            return driver.name
-        else:
-            pass
+        if len(check_name.split())>1:
+            if check_name.split()[1] == test_name: #way of dealing with this with multiple last names
+                return driver.name
+            if len(test_name.split())>1:
+                if check_name.split()[1] == test_name.split()[1]:
+                    return driver.name
     else:
         checked_name = checkValid(name)
         if not checked_name:

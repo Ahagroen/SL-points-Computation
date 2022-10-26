@@ -11,7 +11,7 @@ def index(request):
                 'error_message':'Cannot Find that Driver, Check Spelling and try again.'})
         else:
             try:
-                driverInfo = Driver.objects.get(name__iexact=checked_name)
+                driverInfo = Driver.objects.get(name=checked_name)
                 driverInfo = tryUpdate(driverInfo)
             except:
                 driverInfo = generateDriverInfo(checked_name)

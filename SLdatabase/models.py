@@ -6,6 +6,10 @@ class Driver(models.Model):
     min_points = models.CharField(max_length=10)
     live_points = models.CharField(max_length=10)
     last_updated = models.DateField(auto_now=True)
+    #age = models.CharField(max_length=10)
+    #license_country = models.CharField(max_length=30)
+    #years_racing = models.CharField(max_length=10)
+    #about = models.CharField(max_length=100)
     def __str__(self):
         return self.name
     indexes = [

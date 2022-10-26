@@ -30,3 +30,25 @@ def tryUpdate(driverInfo):
 def getTopTen():
     driverList = list(Driver.objects.order_by("live_points").reverse()[0:10])
     return driverList
+
+def scanDatabaseName(name):
+    for driver in Driver.objects.all():
+        if driver.name == name:
+            return driver.name
+        elif driver.name.split()[1] == name: #way of dealing with this with multiple last names
+            return driver.name
+        elif driver.name.split()[1] == name.split()[1]:
+            return driver.name
+        else:
+            pass
+    else:
+        checked_name = checkValid(name)
+        if not checked_name:
+            return False
+        else:
+            try:
+                driver = Driver.objects.get(name=checked_name)
+                return driver.name
+            except:
+                #generateNewDriver(name)#implement + test later
+                return False

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from SLbackend.ResultScraping import GenerateResults
 from SLdatabase.models import Driver
-from .utils import generateDriverInfo,checkValid, getTopTen,tryUpdate
+from .utils import generateDriverInfo,checkValid, getTopTen, scanDatabaseName,tryUpdate
 from SLbackend.SLComputation import computeSLpoints, getReleventSeries
 import datetime
 
@@ -19,14 +19,14 @@ class DriverModelTests(TestCase):
         testDriver = checkValid('fakeName')
         self.assertIs(testDriver,False)
 
-    def test_filter_relevent_series(self): #Hmmm...
-        testDriver = generateDriverInfo(checkValid('herta'))
+    def test_filter_relevent_series(self): 
+        testDriver = generateDriverInfo(checkValid('Colton Herta'))
         filteredList = getReleventSeries(testDriver.series)
         self.assertAlmostEqual(testDriver.name,'Colton Herta',1)
         self.assertEqual(filteredList,[[['IndyCar Series', 7], ['IMSA SportsCar Championship - GTLM', 14]], 
             [['IndyCar Series', 3], ['IMSA SportsCar Championship - GTLM', 9]], 
             [['IndyCar Series', 5], ['IMSA SportsCar Championship - GTD', 50]], 
-            [['IndyCar Series', 8], ['IMSA SportsCar Championship - LMP2', 0]]])
+            [['IndyCar Series', 10], ['IMSA SportsCar Championship - LMP2', 0]]])
     
     def test_single_series_season(self):
          testDriver = generateDriverInfo(checkValid('palou'))
@@ -66,7 +66,6 @@ class DriverModelTests(TestCase):
         demo7 = computeSLpoints(testSeries7)
         self.assertEqual(demo7[0],6)
 
-
     def test_update_cycle(self):
         testDriver = generateDriverInfo('Colton Herta')
         self.assertEqual(testDriver.last_updated,datetime.date.today())
@@ -86,6 +85,17 @@ class DriverModelTests(TestCase):
         for i in result:
             output.append(i.name)
         self.assertEqual(['name5', 'name1', 'name2', 'name3', 'name4'],output)
+
+    def test_name_input(self):
+        Driver.objects.create(name= "Colton Herta", series = "Indycar",live_points = 5,min_points = 0,last_updated = datetime.date.today())
+        testName1 = "Herta"
+        testName2 = "Colton H" #Not Valid
+        testName3 = "Colton Herta"
+        testName4 = "C Herta"
+        self.assertEqual(scanDatabaseName(testName1),"Colton Herta")
+        self.assertEqual(scanDatabaseName(testName2),False)
+        self.assertEqual(scanDatabaseName(testName3),"Colton Herta")
+        self.assertEqual(scanDatabaseName(testName4),"Colton Herta")
 
 
 

@@ -8,7 +8,21 @@
     <p>
         {{live_points}} ({{min_points}}) <br>
         <table>
-            {{series}} 
+            <thead>
+                <td> Year </td>
+                <td> Series </td>
+                <td> Points </td>
+            </thead>
+            <tbody>
+                {% for series in seriesList %}
+                    <tr>
+                        {% for step in series %}
+                            <td>{{step}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
         </table>
     </p>
     <a href="javascript:history.go(-1)">Back</a>

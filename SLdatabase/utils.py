@@ -5,16 +5,18 @@ from datetime import date,timedelta
 from .models import Driver
 def generateDriverInfo(name):
     if name:
-        history = GenerateResults(name)
-        pointSet = computeSLpoints(history)
-        driverInfo = Driver(name= name,series = history,live_points = pointSet[1],min_points = pointSet[0],last_updated = date.today())
+        driverInfo = Driver(name= name,live_points = 0,min_points = 0,last_updated = date.today())
         driverInfo.save()
+        GenerateResults(driverInfo)
+        computeSLpoints(driverInfo)
         return driverInfo
     else: 
         return False
 
 def checkValid(name):
     checked_name = searchWiki(name)
+    if not checked_name:
+        return False
     section = getSection(checked_name,"Racing record")
     if section:
         return checked_name
@@ -33,14 +35,16 @@ def getTopTen():
 
 def scanDatabaseName(name):
     for driver in Driver.objects.all():
-        if driver.name == name:
+        check_name = driver.name.lower()
+        test_name = name.lower()
+        if check_name == test_name:
             return driver.name
-        elif driver.name.split()[1] == name: #way of dealing with this with multiple last names
-            return driver.name
-        elif driver.name.split()[1] == name.split()[1]:
-            return driver.name
-        else:
-            pass
+        if len(check_name.split())>1:
+            if check_name.split()[1] == test_name: #way of dealing with this with multiple last names
+                return driver.name
+            if len(test_name.split())>1:
+                if check_name.split()[1] == test_name.split()[1]:
+                    return driver.name
     else:
         checked_name = checkValid(name)
         if not checked_name:
@@ -50,5 +54,5 @@ def scanDatabaseName(name):
                 driver = Driver.objects.get(name=checked_name)
                 return driver.name
             except:
-                #generateNewDriver(name)#implement + test later
-                return False
+                driver_info = generateDriverInfo(checked_name)
+                return driver_info.name

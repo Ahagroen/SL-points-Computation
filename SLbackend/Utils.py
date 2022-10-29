@@ -42,11 +42,14 @@ def getSection(driver,request):
         return False
 
 def searchWiki(driver):
-    link = "https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch="+driver
-    webpage = requests.get(link)
-    raw_source = webpage.text
-    parsed_source = json.loads(raw_source)
-    return parsed_source["query"]["search"][0]["title"]
+    try:
+        link = "https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch="+driver
+        webpage = requests.get(link)
+        raw_source = webpage.text
+        parsed_source = json.loads(raw_source)
+        return parsed_source["query"]["search"][0]["title"]
+    except:
+        return False
 
 def computeRedirects(series):
     link = "https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch="+series

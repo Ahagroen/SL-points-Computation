@@ -11,14 +11,16 @@
             <thead>
                 <td> Year </td>
                 <td> Series </td>
+                <td> Finish </td>
                 <td> Points </td>
             </thead>
             <tbody>
                 {% for series in seriesList %}
                     <tr>
-                        {% for step in series %}
-                            <td>{{step}}</td>
-                        {% endfor %}
+                        <td>{{series.year}}</td>
+                        <td>{{series.series_name}}</td>
+                        <td>{{series.finish}}</td>
+                        <td>{{series.points}}</td>
                     </tr>
                 {% endfor %}
             </tbody>

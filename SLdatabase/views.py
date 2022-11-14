@@ -19,4 +19,4 @@ def index(request):
 def driverPage(request,driverName):
     driverInfo = Driver.objects.get(name=driverName)
     return render(request,'SLdatabase/driver.html',{'name':driverInfo.name,
-        'seriesList':driverInfo.series,'live_points':driverInfo.live_points,'min_points':driverInfo.min_points})
+        'seriesList':list(driverInfo.racingseries_set.all().order_by("-year"))[0:11],'live_points':driverInfo.live_points,'min_points':driverInfo.min_points})
